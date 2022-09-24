@@ -56,10 +56,20 @@ chrome.runtime.onInstalled.addListener((details) => {
 
 // function to show the update extension notification
 function notification(eventName) {
+  let tapTo;
+  if (button2Text !== "" && button1Text !== "") {
+    tapTo = "Register";
+  } else if (button1Text !== "" && button2Text === "") {
+    tapTo = button1Text;
+  } else if (button2Text !== "" && button1Text === "") {
+    tapTo = button2Text;
+  } else {
+    tapTo = "View Event";
+  }
   // console.log("dfghjj " + eventName);
   chrome.notifications.create({
     title: "ACM Alerts",
-    message: `Event : ${eventName} \n Tap to view`,
+    message: `Event : ${eventName} \n Tap to ${tapTo}`,
     iconUrl: "./assets/logo.png",
     type: "basic",
     priority: 2,
@@ -69,24 +79,29 @@ chrome.notifications.onClicked.addListener(function (notifId) {
   // console.log(yearLink);
   // window.open(link, "_blank");
 
-if (button2Text !== '' && button1Text !== '') {
-  chrome.tabs.create({
-    url: yearLink,
-  });                           
-} else if (button1Text !== '' && button2Text === '') {
-  chrome.tabs.create({
-    url: button1Link,
-  });
-} else if (button2Text !== '' && button1Text === '') {
-  chrome.tabs.create({
-    url: button2Link,
-  });
-} else {
-  chrome.tabs.create({
-    url: yearLink,
-  });
-}
-
+  if (button2Text !== "" && button1Text !== "") {
+    if (button1Text.includes("Register")) {
+      chrome.tabs.create({
+        url: button1Link,
+      });
+    } else {
+      chrome.tabs.create({
+        url: button2Link,
+      });
+    }
+  } else if (button1Text !== "" && button2Text === "") {
+    chrome.tabs.create({
+      url: button1Link,
+    });
+  } else if (button2Text !== "" && button1Text === "") {
+    chrome.tabs.create({
+      url: button2Link,
+    });
+  } else {
+    chrome.tabs.create({
+      url: yearLink,
+    });
+  }
 });
 
 // fetching the data
