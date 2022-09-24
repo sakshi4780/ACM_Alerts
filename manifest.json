@@ -5,5 +5,12 @@
   "manifest_version": 3,
   "icons": {
     "128": "./assets/logo.png"
-  }
+  },
+  "permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["./app/src/content.js"]
+    }
+  ]
 }
