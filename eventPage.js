@@ -1,10 +1,16 @@
 let previous_events;
 let current_events;
+let button1Text;
+let button2Text;
+let button1Link;
+let button2Link;
+
 // current year , URL , headers for fetching the data
 let year = new Date().getFullYear();
+let yearLink = `https://usict.acm.org/eventYear.php?year=${year}`;
 
 const url = new URL(
-  `http://localhost:8888/acm-new/admin/blogadmin/api.php/?q=readAllEvent&year=${year}`
+  `http://localhost/acm-new/admin/blogadmin/api.php/?q=readAllEvent&year=${year}`
 );
 
 let headers = {
@@ -36,7 +42,7 @@ let installReason = (details) => {
       });
   } else if (details.reason === "update") {
     // chrome.notifications.onClicked.addListener(onClickNotification);
-    notification();
+    // notification();
   }
 };
 function onClickNotification() {
@@ -49,15 +55,39 @@ chrome.runtime.onInstalled.addListener((details) => {
 });
 
 // function to show the update extension notification
-function notification() {
-  //   console.log(12121212);
+function notification(eventName) {
+  // console.log("dfghjj " + eventName);
   chrome.notifications.create({
     title: "ACM Alerts",
-    message: "ACM got a New Update!",
+    message: `Event : ${eventName} \n Tap to view`,
     iconUrl: "./assets/logo.png",
     type: "basic",
+    priority: 2,
   });
 }
+chrome.notifications.onClicked.addListener(function (notifId) {
+  // console.log(yearLink);
+  // window.open(link, "_blank");
+
+if (button2Text !== '' && button1Text !== '') {
+  chrome.tabs.create({
+    url: yearLink,
+  });                           
+} else if (button1Text !== '' && button2Text === '') {
+  chrome.tabs.create({
+    url: button1Link,
+  });
+} else if (button2Text !== '' && button1Text === '') {
+  chrome.tabs.create({
+    url: button2Link,
+  });
+} else {
+  chrome.tabs.create({
+    url: yearLink,
+  });
+}
+
+});
 
 // fetching the data
 
@@ -76,8 +106,16 @@ function countNumberOfEvents() {
       chrome.storage.local.set({ numberOfEvents: data[0].length });
       current_events = data[0].length;
 
+      // console.log(previous_events + " " + current_events);
+      let eventName;
       if (current_events > previous_events) {
-        console.log("New event Happened");
+        eventName = data[0][data[0].length - 1].name;
+        button1Text = data[0][data[0].length - 1].button1Text;
+        button2Text = data[0][data[0].length - 1].button2Text;
+        button1Link = data[0][data[0].length - 1].button1Link;
+        button2Link = data[0][data[0].length - 1].button2Link;
+
+        notification(eventName);
       }
     });
 }
