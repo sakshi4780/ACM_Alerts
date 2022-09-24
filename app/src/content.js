@@ -1,5 +1,13 @@
-// when DOM is fully loaded
+function checkNumberOfEvents() {
+  chrome.storage.local.get(["numberOfEvents"], (numberOfEvents) => {
+    // document.write(data.len);
+    console.log(numberOfEvents);
+  });
+}
 
+// when DOM is fully loaded
 window.addEventListener("DOMContentLoaded", (event) => {
-  console.log("DOM fully loaded and parsed");
+  var intervalId = window.setInterval(function () {
+    checkNumberOfEvents();
+  }, 1000);
 });

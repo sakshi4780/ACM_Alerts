@@ -24,8 +24,5 @@
 
   "background": {
     "service_worker": "./eventPage.js"
-  },
-  "browser_action": {
-    "default_popup": "popup.html"
   }
 }
