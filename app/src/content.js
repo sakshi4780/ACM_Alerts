@@ -1,13 +1,15 @@
 function checkNumberOfEvents() {
+  localStorage.getItem("numberOfEvents");
+  console.log(numberOfEvents);
   chrome.storage.local.get(["numberOfEvents"], (numberOfEvents) => {
-    // document.write(data.len);
-    console.log(numberOfEvents);
+    console.log(numberOfEvents.numberOfEvents);
+    // console.log(numberOfEvents.numberOfEvents);
   });
 }
 
 // when DOM is fully loaded
 window.addEventListener("DOMContentLoaded", (event) => {
-  var intervalId = window.setInterval(function () {
+  setInterval(function () {
     checkNumberOfEvents();
   }, 1000);
 });
