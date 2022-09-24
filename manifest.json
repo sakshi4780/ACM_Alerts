@@ -1,16 +1,31 @@
 {
   "name": "ACM Alerts",
-  "description": "Alert Extension for Event and Blogs",
+  "description": "Alert Extension for Events and Blogs",
   "version": "1.0",
   "manifest_version": 3,
   "icons": {
     "128": "./assets/logo.png"
   },
-  "permissions": ["<all_urls>"],
+  "permissions": [
+    "notifications",
+    "storage",
+    "activeTab",
+    "contextMenus",
+    "tabs",
+    "nativeMessaging"
+  ],
   "content_scripts": [
     {
+      "run_at": "document_start",
       "matches": ["<all_urls>"],
       "js": ["./app/src/content.js"]
     }
-  ]
+  ],
+
+  "background": {
+    "service_worker": "./eventPage.js"
+  },
+  "browser_action": {
+    "default_popup": "popup.html"
+  }
 }
