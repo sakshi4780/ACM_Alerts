@@ -1,0 +1,9 @@
+{
+  "name": "ACM Alerts",
+  "description": "Alert Extension for Event and Blogs",
+  "version": "1.0",
+  "manifest_version": 3,
+  "icons": {
+    "128": "./assets/logo.png"
+  }
+}
