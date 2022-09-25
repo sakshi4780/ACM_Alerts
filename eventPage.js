@@ -23,9 +23,18 @@ let installURL = "";
 let updateURL = "";
 let uninstallURL = "";
 
-chrome.runtime.setUninstallURL(uninstallURL, () => {});
+chrome.runtime.setUninstallURL(uninstallURL, () => {
+  // chrome.notifications.create({
+  //   title: "ACM Alerts",
+  //   message: `Extension is Removed Successfully`,
+  //   iconUrl: "./assets/logo.png",
+  //   type: "basic",
+  //   priority: 2,
+  // });
+});
 
 let installReason = (details) => {
+  console.log(details.reason);
   if (details.reason === "install") {
     // chrome.tabs.create({
     //   url: installURL,
@@ -40,6 +49,13 @@ let installReason = (details) => {
         // use of local storage
         chrome.storage.local.set({ numberOfEvents: data[0].length });
       });
+    chrome.notifications.create({
+      title: "ACM Alerts",
+      message: `Extension is Added Successfully`,
+      iconUrl: "./assets/logo.png",
+      type: "basic",
+      priority: 2,
+    });
   } else if (details.reason === "update") {
     // chrome.notifications.onClicked.addListener(onClickNotification);
     // notification();
@@ -69,7 +85,7 @@ function notification(eventName) {
   // console.log("dfghjj " + eventName);
   chrome.notifications.create({
     title: "ACM Alerts",
-    message: `Event : ${eventName} \n Tap to ${tapTo}`,
+    message: `Event : ${eventName} \nTap to ${tapTo}`,
     iconUrl: "./assets/logo.png",
     type: "basic",
     priority: 2,
